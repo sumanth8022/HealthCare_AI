@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dashboard - HealthCare MS</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<div class="navbar">
+    <span>❤️ HealthCare MS</span>
+    <div>
+        <span class="nav-user">👤 <span th:text="${username}">Admin</span></span>
+        <a th:href="@{/logout}">Logout</a>
+    </div>
+</div>
+<div class="wrapper">
+<div class="sidebar">
+    <div class="menu-title">MENU</div>
+    <a th:href="@{/dashboard}">🏠 Dashboard</a>
+    <div class="menu-title">PATIENTS</div>
+    <a th:href="@{/patients}">All Patients</a>
+    <a th:href="@{/patients/add}">Register Patient</a>
+    <a th:href="@{/patients/search(keyword='')}">Search Patient</a>
+    <div class="menu-title">DOCTORS</div>
+    <a th:href="@{/doctors}">All Doctors</a>
+    <a th:href="@{/doctors/add}">Add Doctor</a>
+    <div class="menu-title">APPOINTMENTS</div>
+    <a th:href="@{/appointments}">All Appointments</a>
+    <a th:href="@{/appointments/book}">Book Appointment</a>
+    <div class="menu-title">AI FEATURES</div>
+    <a href="#" onclick="openChat()">🤖 AI Chatbot</a>
+    <a href="#" onclick="openSuggest()">🏥 Doctor Suggester</a>
+    <a href="#" onclick="openSummarize()">📋 Report Summarizer</a>
+</div>
+<div class="main">
+    <h1>Dashboard</h1>
+    <p class="welcome-text">Welcome to Healthcare Management System</p>
+
+    <div class="cards">
+        <div class="card">
+            <h3>Total Patients</h3>
+            <h1 th:text="${totalPatients}">0</h1>
+        </div>
+        <div class="card">
+            <h3>Active Patients</h3>
+            <h1 th:text="${activePatients}">0</h1>
+        </div>
+        <div class="card">
+            <h3>Total Doctors</h3>
+            <h1 th:text="${totalDoctors}">0</h1>
+        </div>
+        <div class="card">
+            <h3>Appointments</h3>
+            <h1 th:text="${totalAppointments}">0</h1>
+        </div>
+    </div>
+
+    <div class="quick-actions">
+        <div class="action-box">
+            <h3>Register Patient</h3>
+            <p>Add a new patient to the system</p>
+            <a th:href="@{/patients/add}">Register Now</a>
+        </div>
+        <div class="action-box">
+            <h3>Book Appointment</h3>
+            <p>Schedule a new appointment</p>
+            <a th:href="@{/appointments/book}">Book Now</a>
+        </div>
+        <div class="action-box">
+            <h3>Add Doctor</h3>
+            <p>Add a new doctor to the system</p>
+            <a th:href="@{/doctors/add}">Add Now</a>
+        </div>
+    </div>
+
+    <h2 style="color:#2e7d32;margin-bottom:15px;">🤖 AI Features</h2>
+    <div class="quick-actions">
+        <div class="action-box">
+            <h3>🤖 AI Chatbot</h3>
+            <p>Ask any health related question</p>
+            <a href="#" onclick="openChat()">Ask Now</a>
+        </div>
+        <div class="action-box">
+            <h3>🏥 Doctor Suggester</h3>
+            <p>Find the right doctor for your disease</p>
+            <a href="#" onclick="openSuggest()">Get Suggestion</a>
+        </div>
+        <div class="action-box">
+            <h3>📋 Report Summarizer</h3>
+            <p>Get AI summary of patient details</p>
+            <a href="#" onclick="openSummarize()">Summarize</a>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- AI CHATBOT MODAL -->
+<div id="chatModal" class="ai-modal">
+    <div class="ai-modal-box">
+        <div class="ai-modal-header">
+            <h3>🤖 AI Health Chatbot</h3>
+            <button onclick="closeChat()">✕</button>
+        </div>
+        <div class="ai-modal-body">
+            <div id="chatMessages" class="chat-messages">
+                <div class="ai-message">Hello! I am your AI health assistant. Ask me any health question!</div>
+            </div>
+            <div class="chat-input-box">
+                <input type="text" id="chatInput" placeholder="Type your health question..." onkeypress="if(event.key==='Enter') sendChat()"/>
+                <button onclick="sendChat()">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- DOCTOR SUGGESTER MODAL -->
+<div id="suggestModal" class="ai-modal">
+    <div class="ai-modal-box">
+        <div class="ai-modal-header">
+            <h3>🏥 Doctor Suggester</h3>
+            <button onclick="closeSuggest()">✕</button>
+        </div>
+        <div class="ai-modal-body">
+            <p style="margin-bottom:10px;color:gray;">Enter disease or symptoms to get doctor suggestion</p>
+            <input type="text" id="diseaseInput" class="ai-input" placeholder="e.g. Diabetes, chest pain, fever..."/>
+            <button class="ai-btn" onclick="suggestDoctor()">Get Suggestion</button>
+            <div id="suggestResult" class="ai-result"></div>
+        </div>
+    </div>
+</div>
+
+<!-- REPORT SUMMARIZER MODAL -->
+<div id="summarizeModal" class="ai-modal">
+    <div class="ai-modal-box">
+        <div class="ai-modal-header">
+            <h3>📋 Report Summarizer</h3>
+            <button onclick="closeSummarize()">✕</button>
+        </div>
+        <div class="ai-modal-body">
+            <p style="margin-bottom:10px;color:gray;">Enter patient details to get AI summary</p>
+            <textarea id="reportInput" class="ai-textarea" placeholder="Enter patient name, age, disease, symptoms, medications..."></textarea>
+            <button class="ai-btn" onclick="summarizeReport()">Summarize</button>
+            <div id="summarizeResult" class="ai-result"></div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/Script/script.js}"></script>
+</body>
+</html>

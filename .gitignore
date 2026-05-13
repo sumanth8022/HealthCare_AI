@@ -1,0 +1,11 @@
+target/
+*.class
+*.jar
+.classpath
+.project
+.settings/
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+src/main/resources/application.properties

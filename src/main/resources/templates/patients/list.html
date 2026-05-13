@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Patients - HealthCare MS</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<div class="navbar">
+    <span>❤️ HealthCare MS</span>
+    <div><a th:href="@{/logout}">Logout</a></div>
+</div>
+<div class="wrapper">
+<div class="sidebar">
+    <div class="menu-title">MENU</div>
+    <a th:href="@{/dashboard}">🏠 Dashboard</a>
+    <div class="menu-title">PATIENTS</div>
+    <a th:href="@{/patients}">All Patients</a>
+    <a th:href="@{/patients/add}">Register Patient</a>
+    <a th:href="@{/patients/search(keyword='')}">Search Patient</a>
+    <div class="menu-title">DOCTORS</div>
+    <a th:href="@{/doctors}">All Doctors</a>
+    <a th:href="@{/doctors/add}">Add Doctor</a>
+    <div class="menu-title">APPOINTMENTS</div>
+    <a th:href="@{/appointments}">All Appointments</a>
+    <a th:href="@{/appointments/book}">Book Appointment</a>
+</div>
+<div class="main">
+    <div class="page-header">
+        <h1>Patients</h1>
+        <a th:href="@{/patients/add}" class="btn">Register Patient</a>
+    </div>
+
+    <!-- Success Message -->
+    <div th:if="${param.success}" class="success-box">
+        <span th:if="${param.success[0] == 'added'}">✅ Patient registered successfully!</span>
+        <span th:if="${param.success[0] == 'updated'}">✅ Patient updated successfully!</span>
+        <span th:if="${param.success[0] == 'deleted'}">✅ Patient deleted successfully!</span>
+    </div>
+
+    <form th:action="@{/patients/search}" method="get">
+        <div class="search-box">
+            <input type="text" name="keyword"
+                   th:value="${keyword}"
+                   placeholder="Search by name, disease, phone..."/>
+            <button type="submit">Search</button>
+        </div>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Full Name</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Phone</th>
+                <th>Disease</th>
+                <th>Blood Group</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:if="${#lists.isEmpty(patients)}">
+                <td colspan="9" style="text-align:center;padding:20px;color:gray;">
+                    No patients found
+                </td>
+            </tr>
+            <tr th:each="patient : ${patients}">
+                <td th:text="${patient.id}"></td>
+                <td th:text="${patient.fullName}"></td>
+                <td th:text="${patient.age}"></td>
+                <td th:text="${patient.gender}"></td>
+                <td th:text="${patient.phone}"></td>
+                <td th:text="${patient.disease}"></td>
+                <td th:text="${patient.bloodGroup}"></td>
+                <td>
+                    <span th:text="${patient.status}"
+                          th:class="${patient.status == 'Active'} ? 'badge-active' : 'badge-inactive'">
+                    </span>
+                </td>
+                <td>
+                    <a th:href="@{/patients/edit/{id}(id=${patient.id})}" class="btn-edit">Edit</a>
+                    <a th:href="@{/patients/delete/{id}(id=${patient.id})}" class="btn-delete">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+<script th:src="@{/Script/script.js}"></script>
+</body>
+</html>
